@@ -1,0 +1,14 @@
+# Paths are relative to the repository's production compose.yaml.
+services:
+    migrate:
+        environment:
+            DB_FILE_NAME: /app/data/integration.db
+    server:
+        environment:
+            DB_FILE_NAME: /app/data/integration.db
+        ports:
+            - "127.0.0.1:${TEST_PORT:-3100}:3000"
+
+networks:
+    reverse-proxy:
+        external: false

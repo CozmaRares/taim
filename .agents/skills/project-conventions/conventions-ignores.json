@@ -1,0 +1,15 @@
+{
+    "packages/server/src/middleware.ts": [
+        {
+            "ids": [
+                1
+            ],
+            "conventions": [
+                "server-neverthrow"
+            ],
+            "reasons": [
+                "This top-level request boundary forwards database failures to app.onError."
+            ]
+        }
+    ]
+}

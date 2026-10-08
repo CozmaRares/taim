@@ -1,0 +1,57 @@
+services:
+    migrate:
+        build:
+            context: .
+            target: builder
+            args:
+                VITE_CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required}
+        env_file:
+            - .env
+        environment:
+            NODE_ENV: production
+            DB_FILE_NAME: /app/data/local.db
+        volumes:
+            - ${TAIM_DATA_DIR:?TAIM_DATA_DIR is required}:/app/data
+            - ./packages/server/drizzle:/app/packages/server/drizzle
+            - ./packages/server/drizzle.config.ts:/app/packages/server/drizzle.config.ts
+        working_dir: /app/packages/server
+        command:
+            - bun
+            - run
+            - db:migrate
+        logging:
+            driver: json-file
+            options:
+                max-size: "5m"
+                max-file: "3"
+
+    server:
+        build:
+            context: .
+            args:
+                VITE_CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required}
+        env_file:
+            - .env
+        environment:
+            NODE_ENV: production
+            PORT: 3000
+            DB_FILE_NAME: /app/data/local.db
+            FORCE_COLOR: 1
+        volumes:
+            - ${TAIM_DATA_DIR:?TAIM_DATA_DIR is required}:/app/data
+        depends_on:
+            migrate:
+                condition: service_completed_successfully
+        networks:
+            reverse-proxy:
+                aliases:
+                    - taim
+        logging:
+            driver: json-file
+            options:
+                max-size: "20m"
+                max-file: "5"
+
+networks:
+    reverse-proxy:
+        external: true

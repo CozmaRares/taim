@@ -1,0 +1,12 @@
+{
+    "name": "@taim/eslint",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./index.js",
+        "./rules/*": "./rules/*.js"
+    },
+    "devDependencies": {
+        "@typescript-eslint/parser": "8.67.0"
+    }
+}

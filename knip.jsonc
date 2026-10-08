@@ -1,0 +1,17 @@
+{
+    "$schema": "https://unpkg.com/knip@6/schema.json",
+    "workspaces": {
+        ".": {},
+        "packages/server": {
+            // Invoked directly by path in the typecheck script.
+            "ignoreDependencies": ["@typescript/native"],
+        },
+        "packages/test": {
+            "ignoreDependencies": ["@typescript/native"],
+        },
+        "packages/web": {
+            // Native compiler is invoked by path; Tailwind is imported from CSS.
+            "ignoreDependencies": ["@typescript/native", "tailwindcss"],
+        },
+    },
+}
