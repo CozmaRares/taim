@@ -1,0 +1,14 @@
+node_modules/
+**/dist/
+out/
+coverage/
+bun.lock
+**/drizzle/
+.agents/
+.codex/
+.aws/
+**/routeTree.gen.ts
+
+packages/test/reports/
+packages/test/test-results/
+packages/test/playwright-report/

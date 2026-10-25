@@ -1,0 +1,19 @@
+# Paths are relative to the repository's production compose.yaml.
+services:
+    migrate:
+        environment:
+            DB_FILE_NAME: /app/data/integration.db
+    server:
+        build:
+            args:
+                KEEP_TEST_IDS: "true"
+        environment:
+            DB_FILE_NAME: /app/data/integration.db
+            CLERK_SECRET_KEY: ${CLERK_SECRET_KEY:?CLERK_SECRET_KEY is required}
+            CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required}
+        ports:
+            - "127.0.0.1:${TEST_PORT:-3100}:3000"
+
+networks:
+    reverse-proxy:
+        external: false
