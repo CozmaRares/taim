@@ -8,18 +8,19 @@
     ],
     "scripts": {
         "--development--": "",
-        "dev": "bun run --parallel --filter '*' dev",
-        "build": "bun run --parallel --filter '*' build",
-        "start": "bun run --filter @taim/server start",
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "start": "turbo run start --filter=@taim/server",
         "--checks--": "",
-        "check": "bun run --parallel lint typecheck",
-        "lint": "bun run --parallel --filter '*' lint",
-        "lint:fix": "bun run --parallel --filter '*' lint:fix",
-        "typecheck": "bun run --parallel --filter '*' typecheck",
+        "check": "turbo run lint typecheck",
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+        "typecheck": "turbo run typecheck",
         "knip": "SKIP_ENV_VALIDATION=true knip",
-        "test": "bun run --parallel --filter '*' test",
+        "test": "turbo run test --log-order=stream",
+        "test:force": "turbo run test --force --log-order=stream",
         "--tooling--": "",
-        "format": "bun run --parallel --filter '*' lint:fix && prettier --write .",
+        "format": "turbo run lint:fix && prettier --write .",
         "lint-staged": "lint-staged",
         "prepare": "husky"
     },
@@ -38,6 +39,7 @@
         "lint-staged": "17.6.0",
         "prettier": "3.8.3",
         "prettier-plugin-tailwindcss": "0.8.1",
+        "turbo": "2.11.10",
         "typescript": "6.0.3"
     }
 }

@@ -1,0 +1,102 @@
+{
+    "$schema": "https://turborepo.com/schema.json",
+    "ui": "stream",
+    "globalDependencies": ["bun.lock", "bunfig.toml"],
+    "globalEnv": [
+        "CI",
+        "NODE_ENV",
+        "NODE_OPTIONS",
+        "BUN_OPTIONS",
+        "CLERK_*",
+        "VITE_*",
+        "TEST_PORT",
+        "SKIP_ENV_VALIDATION",
+        "LOG_LEVEL",
+        "DB_FILE_NAME",
+        "PORT",
+        "KEEP_TEST_IDS"
+    ],
+    "globalPassThroughEnv": [
+        "DOCKER_*",
+        "BUILDKIT_*",
+        "SSH_AUTH_SOCK",
+        "XDG_RUNTIME_DIR"
+    ],
+    "tasks": {
+        "transit": {
+            "dependsOn": ["^transit"]
+        },
+        "build": {
+            "dependsOn": ["^build", "^transit"],
+            "inputs": ["$TURBO_DEFAULT$", ".env*"],
+            "outputLogs": "new-only"
+        },
+        "@taim/server#build": {
+            "dependsOn": ["^build", "^transit"],
+            "inputs": ["$TURBO_DEFAULT$", ".env*"],
+            "outputs": ["$TURBO_ROOT$/dist/server/**"],
+            "outputLogs": "new-only"
+        },
+        "@taim/web#build": {
+            "dependsOn": ["^build", "^transit"],
+            "inputs": ["$TURBO_DEFAULT$", ".env*"],
+            "outputs": ["$TURBO_ROOT$/dist/public/**"],
+            "outputLogs": "new-only"
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "start": {
+            "cache": false,
+            "persistent": true
+        },
+        "lint": {
+            "dependsOn": ["^transit"],
+            "outputs": [],
+            "outputLogs": "new-only"
+        },
+        "lint:fix": {
+            "cache": false
+        },
+        "typecheck": {
+            "dependsOn": ["^transit"],
+            "outputs": [],
+            "outputLogs": "new-only"
+        },
+        "@taim/test#typecheck": {
+            "dependsOn": ["^transit"],
+            "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/web/src/**"],
+            "outputs": [],
+            "outputLogs": "new-only"
+        },
+        "test": {
+            "inputs": ["$TURBO_DEFAULT$", ".env*"],
+            "outputs": [],
+            "outputLogs": "new-only"
+        },
+        "@taim/test#test": {
+            "outputs": [],
+            "outputLogs": "new-only",
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                ".env*",
+                "$TURBO_ROOT$/.env*",
+                "$TURBO_ROOT$/Dockerfile",
+                "$TURBO_ROOT$/.dockerignore",
+                "$TURBO_ROOT$/compose.yaml",
+                "$TURBO_ROOT$/packages/*/package.json",
+                "$TURBO_ROOT$/packages/server/src/**",
+                "$TURBO_ROOT$/packages/server/drizzle/**",
+                "$TURBO_ROOT$/packages/server/drizzle.config.ts",
+                "$TURBO_ROOT$/packages/server/tsconfig.json",
+                "$TURBO_ROOT$/packages/web/src/**",
+                "$TURBO_ROOT$/packages/web/build/**",
+                "$TURBO_ROOT$/packages/web/public/**",
+                "$TURBO_ROOT$/packages/web/index.html",
+                "$TURBO_ROOT$/packages/web/tsconfig.json",
+                "$TURBO_ROOT$/packages/web/vite.config.ts"
+            ]
+        }
+    }
+}

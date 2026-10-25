@@ -4,7 +4,7 @@ FROM base AS dependencies
 
 WORKDIR /app
 
-COPY package.json bun.lock ./
+COPY package.json bun.lock turbo.json ./
 COPY packages/server/package.json ./packages/server/
 COPY packages/web/package.json ./packages/web/
 COPY packages/eslint/package.json ./packages/eslint/
